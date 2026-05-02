@@ -1,0 +1,26 @@
+{
+  "name": "agencedevoyage.github.io",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@vitejs/plugin-react-swc": "^3.8.0",
+    "lucide-react": "^0.511.0",
+    "motion": "^12.23.6",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5"
+  }
+}
