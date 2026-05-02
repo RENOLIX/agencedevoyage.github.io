@@ -80,6 +80,7 @@ export type Travel = {
   destination: string;
   country: string;
   image: string;
+  images: string[];
   date: string;
   duration: string;
   price: number;
@@ -203,6 +204,7 @@ export const seedTravels: Travel[] = [
     destination: "Santorini & Mykonos",
     country: "Grece",
     image: "https://images.unsplash.com/photo-1651610526505-a46802a4f2a7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200",
+    images: ["https://images.unsplash.com/photo-1651610526505-a46802a4f2a7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200"],
     date: "2026-06-15",
     duration: "8 jours",
     price: 2490,
@@ -219,6 +221,7 @@ export const seedTravels: Travel[] = [
     destination: "Ubud & Seminyak",
     country: "Indonesie",
     image: "https://images.unsplash.com/photo-1550232864-45ae019ae566?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200",
+    images: ["https://images.unsplash.com/photo-1550232864-45ae019ae566?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200"],
     date: "2026-07-08",
     duration: "12 jours",
     price: 3150,
@@ -235,6 +238,7 @@ export const seedTravels: Travel[] = [
     destination: "Atoll de Male",
     country: "Maldives",
     image: "https://images.unsplash.com/photo-1575231902142-29aaec0bd547?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200",
+    images: ["https://images.unsplash.com/photo-1575231902142-29aaec0bd547?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200"],
     date: "2026-07-01",
     duration: "7 jours",
     price: 4890,
@@ -251,6 +255,7 @@ export const seedTravels: Travel[] = [
     destination: "Lima, Cusco & Machu Picchu",
     country: "Perou",
     image: "https://images.unsplash.com/photo-1568665320350-dd0496ef77cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200",
+    images: ["https://images.unsplash.com/photo-1568665320350-dd0496ef77cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200"],
     date: "2026-07-24",
     duration: "14 jours",
     price: 3680,
@@ -267,6 +272,7 @@ export const seedTravels: Travel[] = [
     destination: "Japon traditionnel",
     country: "Japon",
     image: "https://images.unsplash.com/photo-1557348024-6938769deccd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200",
+    images: ["https://images.unsplash.com/photo-1557348024-6938769deccd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200"],
     date: "2026-08-07",
     duration: "11 jours",
     price: 3290,
@@ -283,6 +289,7 @@ export const seedTravels: Travel[] = [
     destination: "Dubai & Abu Dhabi",
     country: "Emirats",
     image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200",
+    images: ["https://images.unsplash.com/photo-1512453979798-5ea266f8880c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200"],
     date: "2026-06-20",
     duration: "6 jours",
     price: 2890,

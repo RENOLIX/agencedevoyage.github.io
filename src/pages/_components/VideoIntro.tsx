@@ -12,7 +12,7 @@ function getIntroVideoSrc() {
     window.matchMedia("(hover: none)").matches;
 
   return isPhone
-    ? "/agencedevoyage.github.io/pc2.mp4"
+    ? "/agencedevoyage.github.io/pc2-mobile.mp4?v=2"
     : "/agencedevoyage.github.io/pc1.mp4";
 }
 

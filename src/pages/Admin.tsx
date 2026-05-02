@@ -10,6 +10,7 @@ const emptyTravel: Omit<Travel, "id" | "ticketsLeft" | "rating"> = {
   destination: "",
   country: "",
   image: "",
+  images: [],
   date: "",
   duration: "7 jours",
   price: 1200,
@@ -104,11 +105,13 @@ export default function Admin() {
   }
 
   function openEditTravel(travel: Travel) {
+    const images = travel.images?.length ? travel.images : [travel.image].filter(Boolean);
     setTravelForm({
       name: travel.name,
       destination: travel.destination,
       country: travel.country,
       image: travel.image,
+      images,
       date: travel.date,
       duration: travel.duration,
       price: travel.price,
@@ -121,10 +124,45 @@ export default function Admin() {
     setTravelMode("form");
   }
 
+  async function readImageFile(file: File) {
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result ?? ""));
+      reader.onerror = () => reject(new Error("Image illisible"));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function uploadTravelImages(files: FileList | null) {
+    if (!files?.length) return;
+    const images = await Promise.all(Array.from(files).map(readImageFile));
+    setTravelForm((current) => {
+      const nextImages = [...current.images, ...images];
+      return {
+        ...current,
+        images: nextImages,
+        image: nextImages[0] ?? current.image,
+      };
+    });
+  }
+
+  function removeTravelImage(index: number) {
+    setTravelForm((current) => {
+      const nextImages = current.images.filter((_, imageIndex) => imageIndex !== index);
+      return {
+        ...current,
+        images: nextImages,
+        image: nextImages[0] ?? "",
+      };
+    });
+  }
+
   function saveTravel(event: FormEvent) {
     event.preventDefault();
     const total = Number(travelForm.ticketsTotal);
-    const image = travelForm.image || "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200";
+    const fallbackImage = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200";
+    const images = travelForm.images.length ? travelForm.images : [travelForm.image || fallbackImage];
+    const image = images[0];
 
     if (editingTravelId) {
       const current = travels.find((item) => item.id === editingTravelId);
@@ -133,6 +171,7 @@ export default function Admin() {
         ...item,
         ...travelForm,
         image,
+        images,
         price: Number(travelForm.price),
         ticketsTotal: total,
         ticketsLeft: Math.max(0, total - reserved),
@@ -146,6 +185,7 @@ export default function Admin() {
         price: Number(travelForm.price),
         rating: 4.8,
         image,
+        images,
       };
       persistTravels([next, ...travels]);
     }
@@ -220,7 +260,24 @@ export default function Admin() {
                   <label>Prix EUR<input type="number" min={1} value={travelForm.price} onChange={(event) => setTravelForm({ ...travelForm, price: Number(event.target.value) })} /></label>
                   <label>Billets disponibles<input type="number" min={0} value={travelForm.ticketsTotal} onChange={(event) => setTravelForm({ ...travelForm, ticketsTotal: Number(event.target.value) })} /></label>
                 </div>
-                <label>Image URL<input value={travelForm.image} onChange={(event) => setTravelForm({ ...travelForm, image: event.target.value })} /></label>
+                <div className="image-uploader">
+                  <label className="upload-zone">
+                    <input type="file" accept="image/*" multiple onChange={(event) => void uploadTravelImages(event.target.files)} />
+                    <strong>Uploader des photos</strong>
+                    <span>Choisissez une ou plusieurs photos depuis votre appareil.</span>
+                  </label>
+                  {travelForm.images.length > 0 && (
+                    <div className="uploaded-images">
+                      {travelForm.images.map((image, index) => (
+                        <div key={`${image.slice(0, 18)}-${index}`}>
+                          <img src={image} alt={`Voyage ${index + 1}`} />
+                          <button type="button" onClick={() => removeTravelImage(index)}><Trash2 size={14} /></button>
+                          {index === 0 && <small>Principale</small>}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
                 <label>Description<textarea required value={travelForm.description} onChange={(event) => setTravelForm({ ...travelForm, description: event.target.value })} /></label>
                 <div className="benefit-picker">
                   {benefitOptions.map((benefit) => {
@@ -248,7 +305,10 @@ export default function Admin() {
                 <div className="travel-management-grid">
                   {travels.map((travel) => (
                     <article key={travel.id} className="travel-manage-card">
-                      <img src={travel.image} alt={travel.name} />
+                      <div className="travel-photo-stack">
+                        {(travel.images?.length ? travel.images : [travel.image]).slice(0, 3).map((image, index) => <img key={`${travel.id}-${index}`} src={image} alt={`${travel.name} ${index + 1}`} />)}
+                        {(travel.images?.length ?? 0) > 3 && <span>+{travel.images.length - 3}</span>}
+                      </div>
                       <div>
                         <span>{travel.category} · {travel.date}</span>
                         <h3>{travel.name}</h3>
