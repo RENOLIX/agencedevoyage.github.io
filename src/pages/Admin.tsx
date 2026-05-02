@@ -81,7 +81,7 @@ export default function Admin() {
   return (
     <main className="admin-shell">
       <aside className="admin-side">
-        <div className="admin-logo"><Sparkles /> <span>Horizons</span><strong>Admin</strong></div>
+        <div className="admin-logo"><Sparkles /> <span>Hamdi</span><strong>Admin</strong></div>
         <button className={tab === "reservations" ? "active" : ""} onClick={() => setTab("reservations")}><ReceiptText /> Reservations</button>
         <button className={tab === "voyages" ? "active" : ""} onClick={() => setTab("voyages")}><WalletCards /> Voyages</button>
         <button className={tab === "historique" ? "active" : ""} onClick={() => setTab("historique")}><UserRound /> Historique</button>

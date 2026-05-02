@@ -46,9 +46,9 @@ export type Reservation = {
 };
 
 export const users: User[] = [
-  { id: "admin", name: "Nora Admin", email: "admin@horizons.local", password: "admin123", role: "admin", avatar: "NA" },
-  { id: "sara", name: "Sara Benali", email: "sara@horizons.local", password: "voyage123", role: "employee", avatar: "SB" },
-  { id: "yacine", name: "Yacine Morel", email: "yacine@horizons.local", password: "voyage123", role: "employee", avatar: "YM" },
+  { id: "admin", name: "Nora Admin", email: "admin@hamdi.local", password: "admin123", role: "admin", avatar: "NA" },
+  { id: "sara", name: "Sara Benali", email: "sara@hamdi.local", password: "voyage123", role: "employee", avatar: "SB" },
+  { id: "yacine", name: "Yacine Morel", email: "yacine@hamdi.local", password: "voyage123", role: "employee", avatar: "YM" },
 ];
 
 export const benefitIcons: Record<BenefitKey, ElementType> = {

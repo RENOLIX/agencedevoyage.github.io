@@ -27,7 +27,7 @@ export default function HeroSection() {
         </div>
         <form className="search-bar">
           <label><MapPin size={17} /><span>Destination<input placeholder="Ou voulez-vous aller ?" /></span></label>
-          <label><Calendar size={17} /><span>Date de depart<input placeholder="Choisir une date" /></span></label>
+          <label><Calendar size={17} /><span>Date de depart<input type="date" aria-label="Date de depart" /></span></label>
           <label><Users size={17} /><span>Voyageurs<select defaultValue="2"><option>1 pers.</option><option value="2">2 pers.</option><option>3 pers.</option><option>4+ pers.</option></select></span></label>
           <button type="button"><Search size={17} /> Rechercher</button>
         </form>

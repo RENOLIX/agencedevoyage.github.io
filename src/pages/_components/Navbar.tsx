@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Menu, Phone, X } from "lucide-react";
 
 const links = [
-  ["Accueil", "#hero"],
-  ["Destinations", "#destinations"],
-  ["Voyage", "#tours"],
-  ["Pourquoi nous", "#why"],
-  ["Contact", "#footer"],
+  { label: "Accueil", href: "/#hero" },
+  { label: "Destinations", href: "/#destinations" },
+  { label: "Voyage", href: "/#tours" },
+  { label: "A propos", href: "/about" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export default function Navbar() {
+  const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const normalMode = scrolled || location.pathname !== "/";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -23,23 +25,23 @@ export default function Navbar() {
 
   return (
     <header className={`nav ${scrolled ? "nav-scrolled" : ""}`}>
-      <a href="#hero" className="brand">
-        <span>Horizons</span>
-        <strong>Voyages</strong>
-      </a>
+      <Link to="/#hero" className="brand" aria-label="Hamdi Voyage">
+        <img
+          src={normalMode ? "/agencedevoyage.github.io/logo-normal.png" : "/agencedevoyage.github.io/logo-transparent.png"}
+          alt="Hamdi Voyage"
+        />
+      </Link>
       <nav className="desktop-links">
-        {links.map(([label, href]) => <a key={label} href={href}>{label}</a>)}
-        <Link to="/admin">Admin</Link>
+        {links.map((link) => <Link key={link.label} to={link.href}>{link.label}</Link>)}
       </nav>
       <div className="nav-actions">
         <a href="tel:+33123456789"><Phone size={14} /> +33 1 23 45 67 89</a>
-        <a className="nav-cta" href="#tours">Explorer</a>
+        <a className="nav-cta" href="/agencedevoyage.github.io/#tours">Explorer</a>
       </div>
       <button className="menu-btn" onClick={() => setOpen(!open)} aria-label="Menu">{open ? <X /> : <Menu />}</button>
       {open && (
         <div className="mobile-menu">
-          {links.map(([label, href]) => <a key={label} onClick={() => setOpen(false)} href={href}>{label}</a>)}
-          <Link onClick={() => setOpen(false)} to="/admin">Admin</Link>
+          {links.map((link) => <Link key={link.label} onClick={() => setOpen(false)} to={link.href}>{link.label}</Link>)}
         </div>
       )}
     </header>

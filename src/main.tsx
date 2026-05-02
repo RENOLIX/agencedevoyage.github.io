@@ -5,6 +5,8 @@ import { AuthProvider, useAuth } from "./components/providers/auth";
 import Index from "./pages/Index";
 import SignIn from "./pages/auth/SignIn";
 import Admin from "./pages/Admin";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import "./index.css";
 
@@ -19,6 +21,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <AuthProvider>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/auth" element={<SignIn />} />
           <Route path="/admin" element={<Protected><Admin /></Protected>} />
           <Route path="*" element={<NotFound />} />

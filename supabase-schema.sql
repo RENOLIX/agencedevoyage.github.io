@@ -1,4 +1,4 @@
--- Horizons Voyages - schema Supabase
+-- Hamdi Voyage - schema Supabase
 -- A coller dans Supabase SQL Editor, puis executer.
 
 create extension if not exists pgcrypto;

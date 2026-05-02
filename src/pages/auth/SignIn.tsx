@@ -6,7 +6,7 @@ import { useAuth } from "../../components/providers/auth";
 export default function SignIn() {
   const { user, login } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState("admin@horizons.local");
+  const [email, setEmail] = useState("admin@hamdi.local");
   const [password, setPassword] = useState("admin123");
   const [error, setError] = useState("");
 
@@ -23,7 +23,7 @@ export default function SignIn() {
       <section className="auth-panel">
         <div className="auth-visual">
           <Plane />
-          <h1>Horizons Back Office</h1>
+          <h1>Hamdi Back Office</h1>
           <p>Les clients consultent les offres. Les employes creent les reservations. L'admin pilote tout.</p>
         </div>
         <form onSubmit={submit} className="auth-form">
@@ -33,7 +33,7 @@ export default function SignIn() {
           <label><LockKeyhole size={16} /> Mot de passe<input type="password" value={password} onChange={(event) => setPassword(event.target.value)} /></label>
           {error && <p className="form-error">{error}</p>}
           <button>Entrer dans l'admin</button>
-          <p className="hint">Admin: admin@horizons.local / admin123<br />Employe: sara@horizons.local / voyage123</p>
+          <p className="hint">Admin: admin@hamdi.local / admin123<br />Employe: sara@hamdi.local / voyage123</p>
         </form>
       </section>
     </main>
