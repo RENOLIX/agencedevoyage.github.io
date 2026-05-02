@@ -1,5 +1,35 @@
 import type { ElementType } from "react";
-import { Camera, Hotel, Plane, ShieldCheck, Star, Utensils, Users, Wifi, Waves } from "lucide-react";
+import {
+  Accessibility,
+  Baby,
+  BedDouble,
+  BriefcaseBusiness,
+  Bus,
+  CalendarCheck,
+  Camera,
+  Car,
+  Coffee,
+  CreditCard,
+  Dumbbell,
+  Hotel,
+  Landmark,
+  Luggage,
+  Map,
+  Mountain,
+  ParkingCircle,
+  Plane,
+  Sailboat,
+  ShieldCheck,
+  Snowflake,
+  Star,
+  TicketCheck,
+  Trees,
+  Utensils,
+  Users,
+  Wifi,
+  Wine,
+  Waves,
+} from "lucide-react";
 
 export type UserRole = "admin" | "employee";
 
@@ -12,7 +42,37 @@ export type User = {
   avatar: string;
 };
 
-export type BenefitKey = "Vol" | "Hotel" | "Repas" | "Guide" | "Spa" | "Wifi" | "Plage" | "Assurance";
+export type BenefitKey =
+  | "Vol"
+  | "Hotel"
+  | "Repas"
+  | "Guide"
+  | "Spa"
+  | "Wifi"
+  | "Plage"
+  | "Assurance"
+  | "Transfert"
+  | "Navette aeroport"
+  | "Petit-dejeuner"
+  | "Piscine"
+  | "Parking"
+  | "Climatisation"
+  | "Vue mer"
+  | "Salle de sport"
+  | "Excursions"
+  | "Guide prive"
+  | "Billets inclus"
+  | "Bagages"
+  | "Location voiture"
+  | "Paiement flexible"
+  | "Annulation gratuite"
+  | "Centre-ville"
+  | "Famille"
+  | "Accessible"
+  | "Nature"
+  | "Montagne"
+  | "Croisiere"
+  | "Experience locale";
 
 export type Travel = {
   id: string;
@@ -79,9 +139,62 @@ export const benefitIcons: Record<BenefitKey, ElementType> = {
   Wifi,
   Plage: Waves,
   Assurance: ShieldCheck,
+  Transfert: Car,
+  "Navette aeroport": Bus,
+  "Petit-dejeuner": Coffee,
+  Piscine: Waves,
+  Parking: ParkingCircle,
+  Climatisation: Snowflake,
+  "Vue mer": Waves,
+  "Salle de sport": Dumbbell,
+  Excursions: Camera,
+  "Guide prive": Users,
+  "Billets inclus": TicketCheck,
+  Bagages: Luggage,
+  "Location voiture": Car,
+  "Paiement flexible": CreditCard,
+  "Annulation gratuite": CalendarCheck,
+  "Centre-ville": Landmark,
+  Famille: Baby,
+  Accessible: Accessibility,
+  Nature: Trees,
+  Montagne: Mountain,
+  Croisiere: Sailboat,
+  "Experience locale": Map,
 };
 
-export const benefitOptions: BenefitKey[] = ["Vol", "Hotel", "Repas", "Guide", "Spa", "Wifi", "Plage", "Assurance"];
+export const benefitOptions: BenefitKey[] = [
+  "Vol",
+  "Hotel",
+  "Repas",
+  "Guide",
+  "Spa",
+  "Wifi",
+  "Plage",
+  "Assurance",
+  "Transfert",
+  "Navette aeroport",
+  "Petit-dejeuner",
+  "Piscine",
+  "Parking",
+  "Climatisation",
+  "Vue mer",
+  "Salle de sport",
+  "Excursions",
+  "Guide prive",
+  "Billets inclus",
+  "Bagages",
+  "Location voiture",
+  "Paiement flexible",
+  "Annulation gratuite",
+  "Centre-ville",
+  "Famille",
+  "Accessible",
+  "Nature",
+  "Montagne",
+  "Croisiere",
+  "Experience locale",
+];
 
 export const seedTravels: Travel[] = [
   {

@@ -1,5 +1,5 @@
 import { FormEvent, useMemo, useState } from "react";
-import { LogOut, Mail, Plus, ReceiptText, ShieldCheck, Sparkles, Trash2, UserRound, Users, WalletCards } from "lucide-react";
+import { ArrowLeft, Edit3, LogOut, Mail, Plus, ReceiptText, Save, ShieldCheck, Trash2, UserRound, Users, WalletCards } from "lucide-react";
 import { useAuth } from "../components/providers/auth";
 import { benefitIcons, benefitOptions, getUsers, readStore, saveUsers, seedTravels, writeStore, type BenefitKey, type ContactMessage, type Reservation, type Travel, type User } from "../lib/data";
 
@@ -28,6 +28,8 @@ export default function Admin() {
   const [adminUsers, setAdminUsers] = useState<User[]>(() => getUsers());
   const [userForm, setUserForm] = useState({ name: "", email: "", password: "", role: "employee" as User["role"] });
   const [travelForm, setTravelForm] = useState(emptyTravel);
+  const [travelMode, setTravelMode] = useState<"list" | "form">("list");
+  const [editingTravelId, setEditingTravelId] = useState<string | null>(null);
   const [reservationForm, setReservationForm] = useState({ travelId: travels[0]?.id ?? "", clientName: "", clientPhone: "", quantity: 1 });
 
   const visibleReservations = useMemo(() => user?.role === "admin" ? reservations : reservations.filter((item) => item.employeeId === user?.id), [reservations, user]);
@@ -95,25 +97,76 @@ export default function Admin() {
     setReservationForm({ travelId: travel.id, clientName: "", clientPhone: "", quantity: 1 });
   }
 
-  function addTravel(event: FormEvent) {
-    event.preventDefault();
-    const next: Travel = {
-      ...travelForm,
-      id: crypto.randomUUID(),
-      ticketsLeft: Number(travelForm.ticketsTotal),
-      ticketsTotal: Number(travelForm.ticketsTotal),
-      price: Number(travelForm.price),
-      rating: 4.8,
-      image: travelForm.image || "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200",
-    };
-    persistTravels([next, ...travels]);
+  function openNewTravel() {
     setTravelForm(emptyTravel);
+    setEditingTravelId(null);
+    setTravelMode("form");
+  }
+
+  function openEditTravel(travel: Travel) {
+    setTravelForm({
+      name: travel.name,
+      destination: travel.destination,
+      country: travel.country,
+      image: travel.image,
+      date: travel.date,
+      duration: travel.duration,
+      price: travel.price,
+      description: travel.description,
+      category: travel.category,
+      benefits: travel.benefits,
+      ticketsTotal: travel.ticketsTotal,
+    });
+    setEditingTravelId(travel.id);
+    setTravelMode("form");
+  }
+
+  function saveTravel(event: FormEvent) {
+    event.preventDefault();
+    const total = Number(travelForm.ticketsTotal);
+    const image = travelForm.image || "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200";
+
+    if (editingTravelId) {
+      const current = travels.find((item) => item.id === editingTravelId);
+      const reserved = current ? Math.max(0, current.ticketsTotal - current.ticketsLeft) : 0;
+      persistTravels(travels.map((item) => item.id === editingTravelId ? {
+        ...item,
+        ...travelForm,
+        image,
+        price: Number(travelForm.price),
+        ticketsTotal: total,
+        ticketsLeft: Math.max(0, total - reserved),
+      } : item));
+    } else {
+      const next: Travel = {
+        ...travelForm,
+        id: crypto.randomUUID(),
+        ticketsLeft: total,
+        ticketsTotal: total,
+        price: Number(travelForm.price),
+        rating: 4.8,
+        image,
+      };
+      persistTravels([next, ...travels]);
+    }
+
+    setTravelForm(emptyTravel);
+    setEditingTravelId(null);
+    setTravelMode("list");
+  }
+
+  function deleteTravel(travelId: string) {
+    if (!window.confirm("Supprimer ce voyage ?")) return;
+    persistTravels(travels.filter((item) => item.id !== travelId));
+    if (reservationForm.travelId === travelId) {
+      setReservationForm({ ...reservationForm, travelId: travels.find((item) => item.id !== travelId)?.id ?? "" });
+    }
   }
 
   return (
     <main className="admin-shell">
       <aside className="admin-side">
-        <div className="admin-logo"><Sparkles /> <span>Hamdi</span><strong>Admin</strong></div>
+        <div className="admin-logo"><img src="/agencedevoyage.github.io/logo-normal.png" alt="Hamdi Voyage" /></div>
         <button className={tab === "reservations" ? "active" : ""} onClick={() => setTab("reservations")}><ReceiptText /> Reservations</button>
         <button className={tab === "voyages" ? "active" : ""} onClick={() => setTab("voyages")}><WalletCards /> Voyages</button>
         <button className={tab === "historique" ? "active" : ""} onClick={() => setTab("historique")}><UserRound /> Historique</button>
@@ -150,27 +203,60 @@ export default function Admin() {
         )}
 
         {tab === "voyages" && (
-          <div className="admin-grid">
-            {user?.role === "admin" ? (
-              <form className="admin-card form-grid" onSubmit={addTravel}>
-                <h2>Ajouter un voyage</h2>
-                <label>Nom<input required value={travelForm.name} onChange={(event) => setTravelForm({ ...travelForm, name: event.target.value })} /></label>
-                <label>Destination<input required value={travelForm.destination} onChange={(event) => setTravelForm({ ...travelForm, destination: event.target.value })} /></label>
-                <label>Pays<input required value={travelForm.country} onChange={(event) => setTravelForm({ ...travelForm, country: event.target.value })} /></label>
-                <label>Date<input type="date" required value={travelForm.date} onChange={(event) => setTravelForm({ ...travelForm, date: event.target.value })} /></label>
-                <label>Prix EUR<input type="number" min={1} value={travelForm.price} onChange={(event) => setTravelForm({ ...travelForm, price: Number(event.target.value) })} /></label>
-                <label>Billets disponibles<input type="number" min={1} value={travelForm.ticketsTotal} onChange={(event) => setTravelForm({ ...travelForm, ticketsTotal: Number(event.target.value) })} /></label>
+          user?.role === "admin" ? (
+            travelMode === "form" ? (
+              <form className="admin-card form-grid travel-editor" onSubmit={saveTravel}>
+                <div className="editor-head">
+                  <button type="button" className="ghost-action" onClick={() => { setTravelMode("list"); setEditingTravelId(null); setTravelForm(emptyTravel); }}><ArrowLeft /> Retour</button>
+                  <h2>{editingTravelId ? "Modifier le voyage" : "Ajouter un voyage"}</h2>
+                </div>
+                <div className="form-two">
+                  <label>Nom<input required value={travelForm.name} onChange={(event) => setTravelForm({ ...travelForm, name: event.target.value })} /></label>
+                  <label>Destination<input required value={travelForm.destination} onChange={(event) => setTravelForm({ ...travelForm, destination: event.target.value })} /></label>
+                  <label>Pays<input required value={travelForm.country} onChange={(event) => setTravelForm({ ...travelForm, country: event.target.value })} /></label>
+                  <label>Date<input type="date" required value={travelForm.date} onChange={(event) => setTravelForm({ ...travelForm, date: event.target.value })} /></label>
+                  <label>Duree<input required value={travelForm.duration} onChange={(event) => setTravelForm({ ...travelForm, duration: event.target.value })} /></label>
+                  <label>Categorie<select value={travelForm.category} onChange={(event) => setTravelForm({ ...travelForm, category: event.target.value as Travel["category"] })}><option>Plage</option><option>Aventure</option><option>Culture</option><option>Luxe</option></select></label>
+                  <label>Prix EUR<input type="number" min={1} value={travelForm.price} onChange={(event) => setTravelForm({ ...travelForm, price: Number(event.target.value) })} /></label>
+                  <label>Billets disponibles<input type="number" min={0} value={travelForm.ticketsTotal} onChange={(event) => setTravelForm({ ...travelForm, ticketsTotal: Number(event.target.value) })} /></label>
+                </div>
                 <label>Image URL<input value={travelForm.image} onChange={(event) => setTravelForm({ ...travelForm, image: event.target.value })} /></label>
                 <label>Description<textarea required value={travelForm.description} onChange={(event) => setTravelForm({ ...travelForm, description: event.target.value })} /></label>
-                <div className="check-grid">{benefitOptions.map((benefit) => {
-                  const Icon = benefitIcons[benefit];
-                  return <label key={benefit}><input type="checkbox" checked={travelForm.benefits.includes(benefit)} onChange={(event) => setTravelForm({ ...travelForm, benefits: event.target.checked ? [...travelForm.benefits, benefit] : travelForm.benefits.filter((x: BenefitKey) => x !== benefit) })} /><Icon size={14} /> {benefit}</label>;
-                })}</div>
-                <button><Plus /> Ajouter le voyage</button>
+                <div className="benefit-picker">
+                  {benefitOptions.map((benefit) => {
+                    const Icon = benefitIcons[benefit];
+                    return <label key={benefit}><input type="checkbox" checked={travelForm.benefits.includes(benefit)} onChange={(event) => setTravelForm({ ...travelForm, benefits: event.target.checked ? Array.from(new Set([...travelForm.benefits, benefit])) : travelForm.benefits.filter((x: BenefitKey) => x !== benefit) })} /><Icon size={16} /> <span>{benefit}</span></label>;
+                  })}
+                </div>
+                <button><Save /> {editingTravelId ? "Enregistrer les modifications" : "Ajouter le voyage"}</button>
               </form>
-            ) : <div className="admin-card"><h2>Acces limite</h2><p>Seul l'administrateur peut ajouter ou modifier les voyages.</p></div>}
-            <TravelInventory travels={travels} />
-          </div>
+            ) : (
+              <div className="travel-admin-list">
+                <div className="list-toolbar">
+                  <div><h2>Voyages</h2><p>{travels.length} voyage(s) dans le catalogue</p></div>
+                  <button onClick={openNewTravel}><Plus /> Ajouter un voyage</button>
+                </div>
+                <div className="travel-management-grid">
+                  {travels.map((travel) => (
+                    <article key={travel.id} className="travel-manage-card">
+                      <img src={travel.image} alt={travel.name} />
+                      <div>
+                        <span>{travel.category} · {travel.date}</span>
+                        <h3>{travel.name}</h3>
+                        <p>{travel.destination} · {travel.country}</p>
+                        <strong>{travel.price.toLocaleString("fr-FR")} EUR</strong>
+                        <small>{travel.ticketsLeft}/{travel.ticketsTotal} billets disponibles</small>
+                      </div>
+                      <footer>
+                        <button onClick={() => openEditTravel(travel)}><Edit3 /> Modifier</button>
+                        <button className="danger" onClick={() => deleteTravel(travel.id)}><Trash2 /> Supprimer</button>
+                      </footer>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            )
+          ) : <div className="admin-card"><h2>Acces limite</h2><p>Seul l'administrateur peut ajouter, modifier ou supprimer les voyages.</p></div>
         )}
 
         {tab === "historique" && (

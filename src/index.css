@@ -170,27 +170,51 @@ em { color: var(--orange); }
 .hint, .form-error { color: var(--muted); font-size: 12px; line-height: 1.7; }
 .form-error { color: #dc2626; }
 
-.admin-shell { background: #f8f4ed; display: grid; grid-template-columns: 270px 1fr; min-height: 100vh; }
+.admin-shell { background: #f8f4ed; display: grid; font-family: Manrope, system-ui, sans-serif; grid-template-columns: 270px 1fr; min-height: 100vh; }
 .admin-side { background: #fffaf2; border-right: 1px solid #ead8bd; display: flex; flex-direction: column; gap: 8px; padding: 24px; position: sticky; top: 0; height: 100vh; }
-.admin-logo { align-items: center; border-bottom: 1px solid #ead8bd; display: flex; gap: 10px; margin-bottom: 18px; padding-bottom: 24px; }
-.admin-logo span { font-family: "Instrument Serif"; font-size: 28px; }
-.admin-logo strong { color: var(--orange); font-size: 11px; letter-spacing: .24em; text-transform: uppercase; }
-.admin-side button { align-items: center; background: transparent; border: 0; color: #75624a; display: flex; gap: 12px; padding: 14px; text-align: left; }
+.admin-logo { align-items: center; border-bottom: 1px solid #ead8bd; display: flex; justify-content: center; margin-bottom: 18px; padding-bottom: 24px; }
+.admin-logo img { height: 108px; object-fit: contain; width: auto; }
+.admin-side button { align-items: center; background: transparent; border: 0; color: #3f3426; display: flex; font-size: 15px; font-weight: 900; gap: 12px; padding: 14px; text-align: left; }
 .admin-side button.active { background: #24170c; color: white; }
 .admin-main { min-width: 0; padding: 34px; }
 .admin-top { align-items: center; display: flex; justify-content: space-between; margin-bottom: 24px; }
 .admin-top h1 { font-size: 40px; }
 .profile { align-items: center; background: white; border: 1px solid #ead8bd; border-radius: 24px; display: flex; gap: 12px; padding: 12px 16px; }
 .profile > span { align-items: center; background: var(--orange); border-radius: 50%; color: white; display: flex; font-weight: 900; height: 42px; justify-content: center; width: 42px; }
-.profile small { color: var(--muted); display: block; }
+.profile small { color: var(--muted); display: block; font-weight: 800; }
 .metric-grid { display: grid; gap: 16px; grid-template-columns: repeat(4, 1fr); margin-bottom: 22px; }
 .metric-grid article, .admin-card, .history-row, .employee-board article { background: rgba(255,255,255,.86); border: 1px solid #ead8bd; border-radius: 28px; box-shadow: 0 24px 70px -54px rgba(219,97,149,.55); padding: 22px; }
 .metric-grid span { color: var(--muted); display: block; font-size: 11px; font-weight: 900; letter-spacing: .18em; text-transform: uppercase; }
 .metric-grid strong { display: block; font-family: "Instrument Serif"; font-size: 34px; margin-top: 8px; }
 .admin-grid { display: grid; gap: 20px; grid-template-columns: minmax(320px, 480px) 1fr; }
 .admin-card h2 { font-family: "Instrument Serif"; font-size: 30px; margin-bottom: 18px; }
-.form-grid { display: grid; gap: 14px; }
+.form-grid { display: grid; gap: 16px; }
 .form-grid textarea { min-height: 100px; resize: vertical; }
+.form-grid label { color: #4b4032; font-size: 13px; font-weight: 950; letter-spacing: .08em; }
+.form-grid input, .form-grid select, .form-grid textarea { color: #171717; font-size: 15px; font-weight: 800; }
+.form-two { display: grid; gap: 14px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.travel-editor { max-width: 980px; }
+.editor-head { align-items: center; display: flex; gap: 18px; justify-content: space-between; }
+.ghost-action { align-items: center; background: #fff7ed !important; border: 1px solid #fed7aa !important; color: #9a3412 !important; display: inline-flex; flex: 0 0 auto; gap: 8px; justify-content: center; padding: 11px 14px !important; }
+.benefit-picker { display: grid; gap: 10px; grid-template-columns: repeat(3, minmax(0, 1fr)); max-height: 430px; overflow: auto; padding: 2px; }
+.benefit-picker label { align-items: center; background: #fffaf2; border: 1px solid #ead8bd; border-radius: 16px; cursor: pointer; display: flex; flex-direction: row; gap: 9px; letter-spacing: 0; padding: 12px; text-transform: none; }
+.benefit-picker span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.travel-admin-list { display: grid; gap: 18px; }
+.list-toolbar { align-items: center; background: rgba(255,255,255,.9); border: 1px solid #ead8bd; border-radius: 28px; display: flex; justify-content: space-between; padding: 22px; }
+.list-toolbar h2 { font-size: 34px; margin: 0; }
+.list-toolbar p { color: var(--muted); font-weight: 800; margin: 4px 0 0; }
+.list-toolbar button { align-items: center; background: #24170c; border: 0; color: white; display: flex; font-weight: 950; gap: 9px; padding: 14px 18px; }
+.travel-management-grid { display: grid; gap: 16px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.travel-manage-card { background: rgba(255,255,255,.92); border: 1px solid #ead8bd; border-radius: 28px; box-shadow: 0 24px 70px -54px rgba(219,97,149,.55); overflow: hidden; }
+.travel-manage-card > img { height: 220px; object-fit: cover; width: 100%; }
+.travel-manage-card > div { padding: 18px; }
+.travel-manage-card span, .travel-manage-card p, .travel-manage-card small { color: var(--muted); font-weight: 800; }
+.travel-manage-card h3 { font-size: 30px; margin: 8px 0 4px; }
+.travel-manage-card strong { display: block; font-family: "Instrument Serif"; font-size: 30px; margin-top: 10px; }
+.travel-manage-card small { display: block; margin-top: 4px; }
+.travel-manage-card footer { border-top: 1px solid #f1dfc9; display: grid; gap: 10px; grid-template-columns: 1fr 1fr; padding: 14px; }
+.travel-manage-card footer button { align-items: center; background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; display: flex; font-weight: 950; gap: 8px; justify-content: center; padding: 12px; }
+.travel-manage-card footer button.danger { background: #fff1f2; border-color: #fecdd3; color: #be123c; }
 .check-grid { display: grid; gap: 10px; grid-template-columns: repeat(2, 1fr); }
 .check-grid label { align-items: center; background: #fff8ef; border: 1px solid #ead8bd; display: flex; flex-direction: row; gap: 8px; letter-spacing: 0; padding: 11px; text-transform: none; }
 .inventory { display: grid; gap: 12px; align-content: start; }
@@ -297,6 +321,8 @@ progress { accent-color: var(--orange); width: 100%; }
   .admin-main { padding: 22px; }
   .admin-top, .history-row { align-items: start; grid-template-columns: 1fr; }
   .admin-top { display: grid; }
+  .form-two, .benefit-picker, .travel-management-grid { grid-template-columns: 1fr; }
+  .list-toolbar { align-items: stretch; display: grid; gap: 14px; }
   .message-card footer, .message-head { display: grid; }
   .about-hero, .contact-hero, .about-story, .contact-layout, .about-values { grid-template-columns: 1fr; padding-left: 22px; padding-right: 22px; }
   .about-hero, .contact-hero { min-height: auto; padding-top: 118px; }
@@ -314,6 +340,11 @@ progress { accent-color: var(--orange); width: 100%; }
   .about-band-track h2 { animation: ticker 13s linear infinite; flex: 0 0 auto; font-family: Manrope, system-ui, sans-serif; font-size: 13px; font-weight: 900; letter-spacing: .12em; line-height: 1; padding-right: 34px; text-transform: uppercase; }
   .contact-card { justify-self: stretch; max-width: none; }
   .contact-form div { grid-template-columns: 1fr; }
+}
+
+@media (pointer: coarse), (hover: none) {
+  .intro-video-desktop { display: none; }
+  .intro-video-mobile { display: block; }
 }
 
 @keyframes ticker {
