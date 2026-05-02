@@ -3,7 +3,6 @@ import { motion } from "motion/react";
 
 export default function VideoIntro({ onComplete }: { onComplete: () => void }) {
   const [fadeOut, setFadeOut] = useState(false);
-  const [ready, setReady] = useState(false);
   const desktopVideoRef = useRef<HTMLVideoElement | null>(null);
   const mobileVideoRef = useRef<HTMLVideoElement | null>(null);
   const completedRef = useRef(false);
@@ -22,11 +21,7 @@ export default function VideoIntro({ onComplete }: { onComplete: () => void }) {
     };
 
     const activeVideo = getActiveVideo();
-    const markReady = () => setReady(true);
 
-    activeVideo?.addEventListener("loadeddata", markReady);
-    activeVideo?.addEventListener("canplay", markReady);
-    activeVideo?.addEventListener("playing", markReady);
     activeVideo?.addEventListener("ended", finish);
     activeVideo?.load();
     void activeVideo?.play().catch(() => undefined);
@@ -39,13 +34,14 @@ export default function VideoIntro({ onComplete }: { onComplete: () => void }) {
     window.addEventListener("touchstart", replayOnFirstTouch, { once: true, passive: true });
     window.addEventListener("click", replayOnFirstTouch, { once: true });
 
-    const maxTimer = window.setTimeout(finish, 14000);
+    const maxTimer = window.setTimeout(finish, 9000);
+    const safetyTimer = window.setTimeout(() => {
+      if (!activeVideo || activeVideo.readyState === 0) finish();
+    }, 3200);
 
     return () => {
       window.clearTimeout(maxTimer);
-      activeVideo?.removeEventListener("loadeddata", markReady);
-      activeVideo?.removeEventListener("canplay", markReady);
-      activeVideo?.removeEventListener("playing", markReady);
+      window.clearTimeout(safetyTimer);
       activeVideo?.removeEventListener("ended", finish);
       window.removeEventListener("touchstart", replayOnFirstTouch);
       window.removeEventListener("click", replayOnFirstTouch);
@@ -62,6 +58,7 @@ export default function VideoIntro({ onComplete }: { onComplete: () => void }) {
         muted
         playsInline
         preload="auto"
+        onError={() => window.setTimeout(onComplete, 700)}
       />
       <video
         ref={mobileVideoRef}
@@ -71,8 +68,9 @@ export default function VideoIntro({ onComplete }: { onComplete: () => void }) {
         muted
         playsInline
         preload="auto"
+        onError={() => window.setTimeout(onComplete, 700)}
       />
-      <div className={`intro-shade ${ready ? "ready" : ""}`} />
+      <div className="intro-shade" />
       <div className="intro-brand">
         <motion.p initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>Bienvenue chez</motion.p>
         <motion.h1 initial={{ opacity: 0, scale: 0.94 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.8, duration: 1.1 }}>Hamdi</motion.h1>
